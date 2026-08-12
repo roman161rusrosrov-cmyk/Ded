@@ -4,7 +4,7 @@ const NAV = [
   ["death", "Катастрофа", "последние минуты"],
   ["deadworld", "Мир мёртвых", "ощущения Уильяма"],
   ["archive", "Извлечение", "работа Архива"],
-  ["protocol", "Уничтожение", "Последняя страница"]
+  ["protocol", "Уничтожение", "Архив + SFI"]
 ];
 let archive = null;
 let view = "chronicle";
@@ -47,10 +47,21 @@ function chapterTemplate(chapter) {
 }
 
 function conclusionTemplate() { return `<section class="conclusion"><p class="eyebrow">${escapeHtml(archive.conclusion.eyebrow)}</p><h2>${escapeHtml(archive.conclusion.title)}</h2>${archive.conclusion.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}<strong>${escapeHtml(archive.conclusion.finalLine)}</strong></section>`; }
-function protocolTemplate() { const p = archive.protocol; return `<section class="protocol" id="protocol"><p class="eyebrow red">${escapeHtml(p.eyebrow)}</p><h2>${escapeHtml(p.title)}</h2><p class="protocol-warning"><strong>КРИТИЧЕСКОЕ УТОЧНЕНИЕ.</strong> ${escapeHtml(p.warning)}</p><div class="steps">${p.steps.map((step) => `<article class="step"><span>${escapeHtml(step.number)}</span><div><h3>${escapeHtml(step.title)}</h3><p>${escapeHtml(step.text)}</p></div></article>`).join("")}</div><div class="protocol-grid"><section class="check-panel"><p class="panel-label">ПРИЗНАКИ ЗАВЕРШЕНИЯ</p><ul>${p.success.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><section class="failure-panel"><p class="panel-label">ЕСЛИ ПОРЯДОК НАРУШЕН</p>${p.failures.map((failure) => `<div><h3>${escapeHtml(failure.title)}</h3><p>${escapeHtml(failure.text)}</p></div>`).join("")}</section></div></section>`; }
+function protocolTemplate() { const p = archive.protocol; return `<section class="protocol" id="protocol">
+  <div class="protocol-signal"><span>OMEGA-12</span><b>ПРОЦЕДУРА КРАЙНЕГО УРОВНЯ</b><small>АРХИВ ПРИСУТСТВУЕТ КАК СОЮЗНИК</small></div>
+  <p class="eyebrow red">${escapeHtml(p.eyebrow)}</p><h2>${escapeHtml(p.title)}</h2>
+  <p class="protocol-warning"><strong>КРИТИЧЕСКОЕ УТОЧНЕНИЕ.</strong> ${escapeHtml(p.warning)}</p>
+  <div class="protocol-overview">${p.overview.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}</div>
+  <section class="protocol-block"><p class="section-label">УЧАСТНИКИ // РАСПРЕДЕЛЕНИЕ РОЛЕЙ</p><div class="role-grid">${p.roles.map((role) => `<article><span>${escapeHtml(role.status)}</span><h3>${escapeHtml(role.title)}</h3><p>${escapeHtml(role.text)}</p></article>`).join("")}</div></section>
+  <section class="protocol-block"><p class="section-label danger-label">НЕИЗМЕНЯЕМЫЕ ПРАВИЛА</p><div class="rule-grid">${p.rules.map((rule,index) => `<article><b>0${index+1}</b><div><h3>${escapeHtml(rule.title)}</h3><p>${escapeHtml(rule.text)}</p></div></article>`).join("")}</div></section>
+  <p class="section-label">ПОШАГОВАЯ ПРОЦЕДУРА // НЕ МЕНЯТЬ ПОРЯДОК</p><div class="steps">${p.steps.map((step) => `<article class="step"><span>${escapeHtml(step.number)}</span><div><h3>${escapeHtml(step.title)}</h3><p>${escapeHtml(step.text)}</p></div></article>`).join("")}</div>
+  <section class="protocol-block sensation-block"><p class="section-label">ЧТО ЧУВСТВУЕТ УИЛЬЯМ</p><div class="sensation-list">${p.sensations.map((item) => `<article><span>${escapeHtml(item.phase)}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></article>`).join("")}</div></section>
+  <div class="protocol-grid"><section class="check-panel"><p class="panel-label">ПРИЗНАКИ ЗАВЕРШЕНИЯ</p><ul>${p.success.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><section class="failure-panel"><p class="panel-label">ЕСЛИ ПОРЯДОК НАРУШЕН</p>${p.failures.map((failure) => `<div><h3>${escapeHtml(failure.title)}</h3><p>${escapeHtml(failure.text)}</p></div>`).join("")}</section></div>
+  <section class="aftercare"><p class="section-label">ПОСЛЕ ПРОЦЕДУРЫ // 21 ДЕНЬ</p><ol>${p.aftercare.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section><p class="final-order">${escapeHtml(p.finalOrder)}</p>
+  </section>`; }
 
 function mainTemplate() {
-  return `<section class="hero"><div class="hero-grid"></div><div class="hero-content"><p class="eyebrow">${escapeHtml(archive.meta.classification)}</p><h1><span>SFI //</span>${escapeHtml(archive.meta.title)}</h1><p class="object-line">${escapeHtml(archive.meta.subtitle)}</p><p class="lead">${escapeHtml(archive.meta.lead)}</p><div class="hero-actions"><button data-view="death">ЧИТАТЬ ХРОНИКУ <span>→</span></button><button class="outline" data-view="protocol">ПРОТОКОЛ УНИЧТОЖЕНИЯ</button></div></div><div class="hero-stamp"><span>СТАТУС</span><b>DECEASED</b><small>02:17:43 // CONFIRMED</small></div></section>
+  return `<section class="hero"><div class="hero-grid"></div><div class="warning-tape" aria-hidden="true">ANOMALOUS ALLY // POSTMORTEM CONTOUR // DO NOT SEPARATE SHADOW //</div><div class="hero-content"><p class="eyebrow">${escapeHtml(archive.meta.classification)}</p><h1><span>SFI //</span>${escapeHtml(archive.meta.title)}</h1><p class="object-line">${escapeHtml(archive.meta.subtitle)}</p><p class="lead">${escapeHtml(archive.meta.lead)}</p><div class="hero-actions"><button data-view="death">ЧИТАТЬ ХРОНИКУ <span>→</span></button><button class="outline" data-view="protocol">ПРОТОКОЛ УНИЧТОЖЕНИЯ</button></div></div><div class="hero-stamp"><span>СТАТУС</span><b>DECEASED</b><small>02:17:43 // CONFIRMED</small></div></section>
   <section class="facts">${archive.facts.map((fact) => `<article><span>${escapeHtml(fact.label)}</span><strong>${escapeHtml(fact.value)}</strong></article>`).join("")}</section>
   <section class="timeline-section"><p class="eyebrow">ХРОНОЛОГИЯ // ПОСЛЕДНИЙ РЕЙС</p><h2>От взлёта до двадцать первого дня</h2><div class="timeline">${archive.timeline.map((entry) => `<article><div class="time">${escapeHtml(entry.time)}</div><div><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.text)}</p></div></article>`).join("")}</div></section>
   <section class="route-cards"><button data-view="death"><span>01</span><h3>Катастрофа</h3><p>Почему Уильям остался на борту и что произошло в 02:17:43.</p><b>ОТКРЫТЬ →</b></button><button data-view="deadworld"><span>02</span><h3>Мир мёртвых</h3><p>Двадцать один день без тела, сна и обычного времени.</p><b>ОТКРЫТЬ →</b></button><button data-view="archive"><span>03</span><h3>Извлечение</h3><p>Почему Архив смог его вернуть и откуда появилась Тень.</p><b>ОТКРЫТЬ →</b></button></section>`;
